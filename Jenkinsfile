@@ -9,6 +9,7 @@ pipeline {
         stage('Build') { 
             steps {
                 sh 'npm cache clean --force'
+                sh 'npm cache verify'
                 sh 'npm i npm@latest -g'
                 sh 'npm install' 
             }
