@@ -1,12 +1,21 @@
-node{
-    docker.image('node:16-buster-slim').inside('-p 3130:3130'){
-        stage('Build'){
-            sh 'npm cache clean --force'
-            sh 'npm i lightweight'
-            sh 'npm install --legacy-peer-deps'
+pipeline {
+    agent {
+        docker {
+            image 'node:16-buster-slim' 
+            args '-p 3000:3000' 
         }
-        stage('Tests'){
-            sh './jenkins/scripts/test.sh'
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'npm cache clean --force'
+                sh 'npm install --legacy-peer-deps' 
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
         }
     }
 }
