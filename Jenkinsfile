@@ -1,21 +1,13 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim' 
-            args '-p 3000:3000' 
-        }
+node{
+    agent{
+        image 'node:16-buster-slim' 
+        args '-p 3030:3030' 
     }
-    stages {
-        stage('Build') { 
-            steps {
-                sh 'npm cache clean --force'
-                sh 'npm install --legacy-peer-deps' 
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './jenkins/scripts/test.sh'
-            }
-        }
+    stage('Build'){
+        sh 'npm cache clean --force'
+        sh 'npm install --legacy-peer-deps'
+    }
+    stage('Tests'){
+        sh './jenkins/scripts/test.sh'
     }
 }
