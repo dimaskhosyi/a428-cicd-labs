@@ -1,10 +1,21 @@
-node{
-    withDockerContainer(args: '-p 3030:3030' , image: 'node:16-buster-slim' ){
-        stage('Build'){
-        sh 'npm install --legacy-peer-deps'
+pipeline {
+    agent {
+        docker {
+            image 'node:16-buster-slim' 
+            args '-p 3000:3000' 
         }
-        stage('Tests'){
-            sh './jenkins/scripts/test.sh'
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'npm cache clean --force'
+                sh 'npm install --legacy-peer-deps' 
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
         }
     }
 }
